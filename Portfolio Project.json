@@ -1,0 +1,333 @@
+{
+  "name": "Portfolio Project",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-3.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-3.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a sales assistant.\n\nAnalyze this lead:\n\n{{ $json.Message }}\n\nGive:\n1. Score from 1-10\n2. Category (High, Medium, Low)\n3. Short reason\nreturn only in json \nexample:\n{\n  \"score\": \"number\",\n  \"category\": \"string\",\n  \"reason\": \"string\"\n}\n"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        -48
+      ],
+      "id": "04e0b90a-aac9-44f3-a3d3-d8cee1df208c",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "vRoPahJIleL2BifL",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "85edda81-8ff5-450b-bb48-dc0b1a8e72f6",
+              "leftValue": "={{ $json.score }}",
+              "rightValue": 6,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        560,
+        -48
+      ],
+      "id": "20cd2934-912a-4e7a-8afe-80c95980125b",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ec04db9d-c465-4e6a-8c78-75c1c467ff9c",
+              "name": "Name",
+              "value": "={{ $('On form submission').item.json.Name }}",
+              "type": "string"
+            },
+            {
+              "id": "3b7d27ca-f7d2-4de7-98e5-53f7e3bbcb58",
+              "name": "Email",
+              "value": "={{ $('On form submission').item.json.Email }}",
+              "type": "string"
+            },
+            {
+              "id": "cf484c72-4f35-47ce-9e94-3b1a786cf7f9",
+              "name": "Lead",
+              "value": "={{ $('On form submission').item.json.Message }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        784,
+        16
+      ],
+      "id": "131a6d25-2660-4ae2-ade5-0a3170ed56cf",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1-XAekha_zZiBZgX-ZDKqohXShymD1lUOTHmn9HNOpSo",
+          "mode": "list",
+          "cachedResultName": "Webhook Flow",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-XAekha_zZiBZgX-ZDKqohXShymD1lUOTHmn9HNOpSo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1-XAekha_zZiBZgX-ZDKqohXShymD1lUOTHmn9HNOpSo/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('On form submission').item.json.Name }}",
+            "Email": "={{ $('On form submission').item.json.Email }}",
+            "Lead": "={{ $('On form submission').item.json.Message }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Lead",
+              "displayName": "Lead",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        944,
+        16
+      ],
+      "id": "8039d95a-cc30-46ae-9fff-4f493969ed8e",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "Nl4O5Sogj9iamLA0",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "kiransateesh23@gmail.com",
+        "subject": "High Value Lead",
+        "emailType": "text",
+        "message": "=Name : {{ $('On form submission').item.json.Name }}\nEmail : {{ $('On form submission').item.json.Email }}\nLead : {{ $('On form submission').item.json.Message }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        784,
+        -192
+      ],
+      "id": "596b729b-f63f-4aca-b6f9-08366a9b7365",
+      "name": "Email Notify",
+      "webhookId": "f00e9036-736d-453c-a02a-df4d1fbf3cb1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "k6jeMKV3BOHRHwI9",
+          "name": "Gmail account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.content.parts[0].text;\n\nconst parsed = JSON.parse(text);\n\nreturn [\n  {\n    json: parsed\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        -48
+      ],
+      "id": "cb810a09-f852-432d-994b-59be72c24da7",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "formTitle": "AI Lead Qualification",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name"
+            },
+            {
+              "fieldLabel": "Email"
+            },
+            {
+              "fieldLabel": "Message"
+            }
+          ]
+        },
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -144,
+        -48
+      ],
+      "id": "1859852b-833d-4806-9f63-00c427968884",
+      "name": "On form submission",
+      "webhookId": "18e43145-14d3-497a-ac15-ae7846a49b32"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Email Notify",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "6fcf3880-bcc4-446a-a919-1d2f74486c00",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "7e181e93d5aa58d4de91ca626a12a1b71ff67058dff288b8af363d4926102e2d"
+  },
+  "nodeGroups": [],
+  "id": "DavSSvLQTSwdJK2Z",
+  "tags": []
+}
