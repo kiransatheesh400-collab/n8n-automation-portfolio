@@ -1,10 +1,4 @@
-# n8n-automation-portfolio
-Business automation workflows built using n8n and AI to reduce manual work and improve efficiency.
-# 1.AI Lead Qualification System
-
-## Overview
-
-This workflow automatically evaluates incoming leads using AI and categorizes them as High, Medium, or Low quality.
+## AI Lead Qualification System
 
 ## Problem
 
@@ -12,7 +6,7 @@ Businesses receive many inquiries and spend time manually identifying serious pr
 
 ## Solution
 
-The workflow receives lead information through a webhook, sends it to Gemini AI for analysis, and categorizes the lead automatically.
+This workflow receives lead information through a webhook, sends it to Gemini AI for analysis, and categorizes the lead automatically.
 
 ## Workflow
 
