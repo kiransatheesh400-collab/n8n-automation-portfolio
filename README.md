@@ -32,10 +32,5 @@ Category: High
 
 Reason: Clear requirements and budget provided.
 
-## Screenshots
-
-See the screenshots folder.
-
-## Workflow Export
-
-The workflow1.json file is included in this repository.
+## Visual Proof
+See the pngs and .json file in this repository
